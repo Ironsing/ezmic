@@ -1,1 +1,3 @@
-npm test
+set -e
+
+npm run build

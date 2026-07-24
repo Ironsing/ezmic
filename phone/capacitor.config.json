@@ -1,0 +1,10 @@
+{
+  "appId": "com.ironsing.ezmic",
+  "appName": "ezmic",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}

@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "run-built": "vite preview"
+    "run-built": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@capacitor/camera": "latest",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
+    "husky": "^9.1.7",
     "vite": "^7.3.1"
   },
   "author": "",

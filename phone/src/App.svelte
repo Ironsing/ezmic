@@ -6,23 +6,9 @@
     }
 </script>
 
-<main>
+<main class="font-sans text-center p-8">
     <h1>Hello from Svelte!</h1>
 
     <p>Clicks: {count}</p>
-    <button onclick={increment}> Click me </button>
+    <button class="px-4 py-2 text-base cursor-pointer" onclick={increment}> Click me </button>
 </main>
-
-<style>
-    main {
-        font-family: sans-serif;
-        text-align: center;
-        padding: 2rem;
-    }
-
-    button {
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-</style>

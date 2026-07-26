@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { onDestroy } from "svelte";
+    import { SplashScreen } from "@capacitor/splash-screen";
+    import { onDestroy, onMount } from "svelte";
 
     let isPlaying = $state<boolean>(false);
     let errorMessage = $state<string>("");
@@ -90,6 +91,10 @@
             startLoopback();
         }
     }
+
+    onMount(async () => {
+        await SplashScreen.hide();
+    })
 
     onDestroy(() => {
         stopLoopback();

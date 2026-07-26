@@ -10,4 +10,8 @@ export default defineConfig({
     emptyOutDir: true,
   },
   plugins: [svelte(), tailwindcss(),],
+  server: {
+    host: '0.0.0.0', // Exposes Vite on your local network
+    port: 5175,
+  },
 });

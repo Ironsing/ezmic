@@ -1,5 +1,7 @@
 <script lang="ts">
     import { SplashScreen } from "@capacitor/splash-screen";
+    import { AudioSession } from "@capgo/capacitor-audio-session";
+    import { Capacitor } from "@capacitor/core";
     import { onDestroy, onMount } from "svelte";
 
     let isPlaying = $state<boolean>(false);
@@ -13,16 +15,21 @@
         errorMessage = "";
 
         try {
+            // Force audio output to the built-in speaker (not the earpiece)
+            if (Capacitor.getPlatform() === "ios") {
+                await AudioSession.overrideOutput("speaker");
+            }
+
             // 1. Request microphone permissions & get audio stream
             mediaStream = await navigator.mediaDevices.getUserMedia({
                 audio: {
-                    echoCancellation: false, // Disabling processing gives raw audio output
+                    echoCancellation: false,
                     noiseSuppression: false,
                     autoGainControl: false,
                 },
             });
 
-            // 2. Initialize modern Web Audio Context
+            // 2. Initialize Web Audio Context
             const AudioCtx =
                 window.AudioContext ||
                 (
@@ -30,17 +37,16 @@
                         webkitAudioContext: typeof AudioContext;
                     }
                 ).webkitAudioContext;
+
+            // FIX 2: Explicitly pass a sampleRate matching iOS WebKit hardware (often 44100 or 48000)
             audioContext = new AudioCtx();
 
-            // iOS WebKit requires AudioContext to be resumed within a user gesture
             if (audioContext.state === "suspended") {
                 await audioContext.resume();
             }
 
-            // 3. Create media source from the microphone stream
+            // 3. Connect mic source -> destination
             sourceNode = audioContext.createMediaStreamSource(mediaStream);
-
-            // 4. Connect input directly to speaker output
             sourceNode.connect(audioContext.destination);
 
             isPlaying = true;
@@ -94,7 +100,7 @@
 
     onMount(async () => {
         await SplashScreen.hide();
-    })
+    });
 
     onDestroy(() => {
         stopLoopback();
